@@ -80,13 +80,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onAddElement }) => {
   }
 
   return (
-    <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
-      <div className="p-6 border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">Contract Elements</h2>
-        <p className="text-sm text-gray-600">Drag elements to the canvas to build your smart contract</p>
+    <div className="w-full h-full bg-white flex flex-col">
+      <div className="p-4 lg:p-6 border-b border-gray-200">
+        <h2 className="text-base lg:text-lg font-semibold text-gray-900 mb-2">Contract Elements</h2>
+        <p className="text-xs lg:text-sm text-gray-600">Drag elements to the canvas to build your smart contract</p>
       </div>
 
-      <div className="flex-1 p-4 space-y-3 overflow-y-auto">
+      <div className="flex-1 p-3 lg:p-4 space-y-2 lg:space-y-3 overflow-y-auto">
         {elementTypes.map((element) => {
           const Icon = element.icon
           return (
@@ -95,14 +95,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onAddElement }) => {
               draggable
               onDragStart={(e) => handleDragStart(e, element.type)}
               onClick={() => onAddElement({ type: element.type, config: {} })}
-              className="group p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm cursor-move transition-all duration-200 hover:scale-[1.02]"
+              className="group p-3 lg:p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm cursor-move transition-all duration-200 hover:scale-[1.02]"
             >
-              <div className="flex items-start space-x-3">
-                <div className={`w-10 h-10 ${element.color} rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                  <Icon className="w-5 h-5 text-white" />
+              <div className="flex items-start space-x-2 lg:space-x-3">
+                <div className={`w-8 lg:w-10 h-8 lg:h-10 ${element.color} rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                  <Icon className="w-4 lg:w-5 h-4 lg:h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-medium text-gray-900 group-hover:text-gray-700">
+                  <h3 className="text-xs lg:text-sm font-medium text-gray-900 group-hover:text-gray-700">
                     {element.label}
                   </h3>
                   <p className="text-xs text-gray-500 mt-1 leading-relaxed">
@@ -115,7 +115,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onAddElement }) => {
         })}
       </div>
 
-      <div className="p-4 border-t border-gray-200 bg-gray-50">
+      <div className="p-3 lg:p-4 border-t border-gray-200 bg-gray-50">
         <div className="text-xs text-gray-500 space-y-1">
           <p>💡 <strong>Tip:</strong> Drag elements to canvas or click to add</p>
           <p>🔧 Click elements on canvas to configure</p>

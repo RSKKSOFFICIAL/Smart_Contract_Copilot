@@ -47,7 +47,7 @@ const Canvas: React.FC<CanvasProps> = ({
   }
 
   return (
-    <div className="flex-1 relative bg-gray-50">
+    <div className="w-full h-full relative bg-gray-50">
       <div
         ref={canvasRef}
         className="w-full h-full relative overflow-auto"
@@ -68,13 +68,13 @@ const Canvas: React.FC<CanvasProps> = ({
 
         {/* Drop Zone Hint */}
         {elements.length === 0 && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center p-8 border-2 border-dashed border-gray-300 rounded-xl bg-white/50 backdrop-blur-sm">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-2xl">🚀</span>
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <div className="text-center p-6 lg:p-8 border-2 border-dashed border-gray-300 rounded-xl bg-white/50 backdrop-blur-sm max-w-md">
+              <div className="w-12 lg:w-16 h-12 lg:h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <span className="text-xl lg:text-2xl">🚀</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Start Building Your Smart Contract</h3>
-              <p className="text-gray-600 max-w-md">
+              <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-2">Start Building Your Smart Contract</h3>
+              <p className="text-sm lg:text-base text-gray-600">
                 Drag elements from the sidebar or click them to add to your canvas. 
                 Build complex smart contracts with our visual interface.
               </p>

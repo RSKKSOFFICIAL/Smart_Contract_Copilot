@@ -4,7 +4,7 @@ import Sidebar from './components/Sidebar'
 import Canvas from './components/Canvas'
 import CodeEditor from './components/CodeEditor'
 import AuditPanel from './components/AuditPanel'
-import GasOptimizationPanel from './components/GasOptimizationPanel'
+import OptimizationPanel from './components/OptimizationPanel'
 import { ContractElement } from './types'
 
 function App() {
@@ -12,7 +12,8 @@ function App() {
   const [selectedElement, setSelectedElement] = useState<ContractElement | null>(null)
   const [generatedCode, setGeneratedCode] = useState('')
   const [showAudit, setShowAudit] = useState(false)
-  const [showGasOptimization, setShowGasOptimization] = useState(false)
+  const [showOptimization, setShowOptimization] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const addElement = (element: Omit<ContractElement, 'id' | 'position'>) => {
     const newElement: ContractElement = {
@@ -185,12 +186,16 @@ contract GeneratedContract {
 
   const toggleAudit = () => {
     setShowAudit(!showAudit)
-    if (showGasOptimization) setShowGasOptimization(false)
+    if (showOptimization) setShowOptimization(false)
   }
 
-  const toggleGasOptimization = () => {
-    setShowGasOptimization(!showGasOptimization)
+  const toggleOptimization = () => {
+    setShowOptimization(!showOptimization)
     if (showAudit) setShowAudit(false)
+  }
+
+  const handleCodeChange = (newCode: string) => {
+    setGeneratedCode(newCode)
   }
 
   return (
@@ -198,29 +203,69 @@ contract GeneratedContract {
       <Header 
         onGenerateContract={generateContract} 
         onToggleAudit={toggleAudit}
-        onOptimizeGas={toggleGasOptimization}
+        onOptimizeGas={toggleOptimization}
         onImportContract={handleImportContract}
         onExportContract={handleExportContract}
         showAudit={showAudit}
+        onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        sidebarOpen={sidebarOpen}
       />
       
-      <div className="flex-1 flex">
-        <Sidebar onAddElement={addElement} />
-        
-        <div className="flex-1 flex">
-          <Canvas 
-            elements={elements}
-            selectedElement={selectedElement}
-            onSelectElement={setSelectedElement}
-            onUpdateElement={updateElement}
-            onDeleteElement={deleteElement}
-            onAddElement={addElement}
+      <div className="flex-1 flex relative">
+        {/* Mobile Sidebar Overlay */}
+        {sidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
           />
+        )}
+        
+        {/* Sidebar - Fixed positioning */}
+        <div className={`
+          fixed lg:relative top-16 lg:top-0 left-0 h-[calc(100vh-4rem)] lg:h-full
+          w-80 bg-white border-r border-gray-200 z-50 lg:z-auto
+          transform transition-transform duration-300 ease-in-out lg:transform-none
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
+          <Sidebar onAddElement={addElement} />
+        </div>
+        
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col lg:flex-row lg:ml-0">
+          {/* Canvas */}
+          <div className="flex-1 min-h-[50vh] lg:min-h-full">
+            <Canvas 
+              elements={elements}
+              selectedElement={selectedElement}
+              onSelectElement={setSelectedElement}
+              onUpdateElement={updateElement}
+              onDeleteElement={deleteElement}
+              onAddElement={addElement}
+            />
+          </div>
           
-          <div className="w-1/2 flex flex-col">
-            <CodeEditor code={generatedCode} />
-            {showAudit && <AuditPanel elements={elements} code={generatedCode} />}
-            {showGasOptimization && <GasOptimizationPanel elements={elements} code={generatedCode} />}
+          {/* Code Editor and Panels */}
+          <div className="w-full lg:w-1/2 flex flex-col min-h-[50vh] lg:min-h-full">
+            <div className="flex-1">
+              <CodeEditor 
+                code={generatedCode} 
+                onChange={handleCodeChange}
+              />
+            </div>
+            {showAudit && (
+              <div className="h-64 lg:h-auto lg:flex-1">
+                <AuditPanel code={generatedCode} />
+              </div>
+            )}
+            {showOptimization && (
+              <div className="h-64 lg:h-auto lg:flex-1">
+                <OptimizationPanel 
+                  code={generatedCode} 
+                  onCodeChange={handleCodeChange}
+                  onClose={() => setShowOptimization(false)}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
